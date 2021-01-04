@@ -1,8 +1,8 @@
 #!/usr/bin/env /bin/bash
 
-export INSTANCE_NAME=$1
-export VERSION=""
-export NAME=""
+export NAME=$1
+export VERSION=$2
+export INSTANCE_NAME="{$NAME}-${VERSION}"
 
 export IP_ADDRESS=$(docker inspect --format '{{ .NetworkSettings.Networks.frontend.IPAddress }}' ${INSTANCE_NAME})
 
@@ -19,7 +19,7 @@ NAME=${NAME%"-$VERSION"}
 
 # Register in LB
 docker cp /var/www/nginx/conf/${NAME}.conf nginx:/etc/nginx/conf.d
-docker exec nginx sed -i "s/---IP_ADDRESS---/${IP_ADDRESS}/" /etc/nginx/conf.d/${APP_NAME}.conf
+docker exec nginx sed -i "s/---IP_ADDRESS---/${IP_ADDRESS}/" /etc/nginx/conf.d/${NAME}.conf
 docker exec nginx nginx -s reload
 
 
