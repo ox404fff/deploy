@@ -7,8 +7,8 @@ pipeline {
         }
     }
     parameters {
-        string(name: 'APPLICATION', description: 'Application')
-        string(name: 'VERSION', description: 'Version')
+        string(name: 'APP_NAME', defaultValue: '', description: 'Application')
+        string(name: 'APP_VERSION', defaultValue: '', description: 'Version')
     }
     stages {
         stage('Test') {
@@ -17,6 +17,7 @@ pipeline {
                     string(credentialsId: 'doAccessToken', variable: 'DIGITALOCEAN_ACCESS_TOKEN'),
                     sshUserPrivateKey(credentialsId: 'app-servers', keyFileVariable: 'SSH_APP_SERVERS')
                 ]) {
+                    sh ('echo ${APP_VERSION}')
 		    sh '''
 		        export APP_SERVER=142.93.96.209
 
@@ -31,7 +32,7 @@ pipeline {
                         ssh root@${APP_SERVER} -i ${SSH_APP_SERVERS} docker run --rm -v /var/run/docker.sock:/var/run/docker.sock \
                             -e DIGITALOCEAN_ACCESS_TOKEN=${DIGITALOCEAN_ACCESS_TOKEN} \
                             -e BUILD_NUMBER=${BUILD_NUMBER} \
-                            doctl /run/run.sh
+                            doctl /run/run.sh 
                         sleep 15
 
 		        ssh root@${APP_SERVER} -i ${SSH_APP_SERVERS} /bin/bash /run/reload.sh personal-${VERSION}
