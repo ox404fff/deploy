@@ -21,7 +21,6 @@ pipeline {
 		        export APP_SERVER=142.93.96.209
 
 		        export WORKSPACE_PATH="/tmp/.deployment/${APP_NAME}-${APP_VERSION}"
-			cd  ${WORKSPACE_PATH}
 
                         mkdir ~/.ssh && ssh-keyscan -H ${APP_SERVER} >> ~/.ssh/known_hosts
 
