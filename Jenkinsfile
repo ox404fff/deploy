@@ -9,6 +9,10 @@ pipeline {
 
     stages {
         stage('Test') {
+            parameters {
+         	string(name: 'APPLICATION', description: 'Application name')
+         	string(name: 'VERSION', description: 'Version fd application')
+            }
             steps {
 		
 		export APP_SERVER=142.93.96.209
