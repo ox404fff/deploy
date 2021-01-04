@@ -6,14 +6,11 @@ export WORKSPACE_PATH=$3
 export DIGITALOCEAN_ACCESS_TOKEN=$4
 export INSTANCE_NAME="${NAME}-${VERSION}"
 
-export IP_ADDRESS=$(docker inspect --format '{{ .NetworkSettings.Networks.frontend.IPAddress }}' ${INSTANCE_NAME})
-
 echo "name ${NAME}"
-echo ${VERSION}
+echo "version ${VERSION}"
 echo ${WORKSPACE_PATH}
 echo ${DIGITALOCEAN_ACCESS_TOKEN}
 echo ${INSTANCE_NAME}
-echo ${IP_ADDRESS}
 
 docker build -t doctl -f ${WORKSPACE_PATH}/Dockerfile ${WORKSPACE_PATH}
 docker run --rm -v /var/run/docker.sock:/var/run/docker.sock \
@@ -22,6 +19,9 @@ docker run --rm -v /var/run/docker.sock:/var/run/docker.sock \
         -e APP_VERSION=${APP_VERSION} \
         doctl /run/run.sh 
 
+export IP_ADDRESS=$(docker inspect --format '{{ .NetworkSettings.Networks.frontend.IPAddress }}' ${INSTANCE_NAME})
+
+echo "Ip address: ${IP_ADDRESS}"
 
 # Register in LB
 docker cp ${WORKSPACE_PATH}/conf.d/${NAME}.conf nginx:/etc/nginx/conf.d
