@@ -36,7 +36,7 @@ pipeline {
                             doctl /run/run.sh 
                         sleep 15
 
-		        ssh root@${APP_SERVER} -i ${SSH_APP_SERVERS} /bin/bash ${WORKSPACE_PATH}/run.sh ${APP_NAME}-${APP_VERSION}
+		        ssh root@${APP_SERVER} -i ${SSH_APP_SERVERS} /bin/bash ${WORKSPACE_PATH}/run.sh ${APP_NAME} ${APP_VERSION}
                     '''
                 }
             }
