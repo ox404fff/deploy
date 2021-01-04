@@ -1,15 +1,15 @@
 #!/usr/bin/env /bin/bash
 
-export APPLICATION=$1
+export INSTANCE_NAME=$1
 export VERSION=""
 export NAME=""
 
-export IP_ADDRESS=$(docker inspect --format '{{ .NetworkSettings.Networks.frontend.IPAddress }}' ${APPLICATION})
+export IP_ADDRESS=$(docker inspect --format '{{ .NetworkSettings.Networks.frontend.IPAddress }}' ${INSTANCE_NAME})
 
 echo $IP_ADDRESS
 
 # Parse:
-for i in ${APPLICATION//-/ }
+for i in ${INSTANCE_NAME//-/ }
 do
     VERSION=$i
     [[ -z "${NAME// }" ]] && NAME=$i || NAME="${NAME}-$i"
