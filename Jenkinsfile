@@ -29,16 +29,7 @@ pipeline {
                         sleep 15
                         scp -i ${SSH_APP_SERVERS} -r ./* root@${APP_SERVER}:${WORKSPACE_PATH}
                         sleep 15
-                        ssh root@${APP_SERVER} -i ${SSH_APP_SERVERS} docker build -t doctl -f ${WORKSPACE_PATH}/Dockerfile ${WORKSPACE_PATH}
-                        sleep 15
-                        ssh root@${APP_SERVER} -i ${SSH_APP_SERVERS} docker run --rm -v /var/run/docker.sock:/var/run/docker.sock \
-                            -e DIGITALOCEAN_ACCESS_TOKEN=${DIGITALOCEAN_ACCESS_TOKEN} \
-                            -e APP_NAME=${APP_NAME} \
-                            -e APP_VERSION=${APP_VERSION} \
-                            doctl /run/run.sh 
-                        sleep 15
-
-		        ssh root@${APP_SERVER} -i ${SSH_APP_SERVERS} /bin/bash ${WORKSPACE_PATH}/run.sh ${APP_NAME} ${APP_VERSION}
+		        ssh root@${APP_SERVER} -i ${SSH_APP_SERVERS} /bin/bash ${WORKSPACE_PATH}/run.sh ${APP_NAME} ${APP_VERSION} ${WORKSPACE_PATH}
                     '''
                 }
             }
