@@ -4,7 +4,7 @@ export INSTANCE_NAME=$1
 export VERSION=""
 export NAME=""
 
-export IP_ADDRESS=$(docker inspect --format '{{ .NetworkSettings.Networks.frontend.IPAddress }}' ${APP_NAME}-${APP_VERSION})
+export IP_ADDRESS=$(docker inspect --format '{{ .NetworkSettings.Networks.frontend.IPAddress }}' ${INSTANCE_NAME})
 
 echo $IP_ADDRESS
 
