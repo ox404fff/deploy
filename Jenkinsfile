@@ -7,8 +7,8 @@ pipeline {
         }
     }
     parameters {
-        string(name: 'application', description: 'Application')
-        string(name: 'version', description: 'Version')
+        string(name: 'APPLICATION', description: 'Application')
+        string(name: 'VERSION', description: 'Version')
     }
     stages {
         stage('Test') {
@@ -22,11 +22,11 @@ pipeline {
 
                         mkdir ~/.ssh && ssh-keyscan -H ${APP_SERVER} >> ~/.ssh/known_hosts
 
-                        ssh root@${APP_SERVER} -i ${SSH_APP_SERVERS} mkdir -p /tmp/.deployment/personal-${params.version}
+                        ssh root@${APP_SERVER} -i ${SSH_APP_SERVERS} mkdir -p /tmp/.deployment/personal-${VERSION}
                         sleep 15
-                        scp -i ${SSH_APP_SERVERS} -r ./* root@${APP_SERVER}:/tmp/.deployment/personal-${params.version}
+                        scp -i ${SSH_APP_SERVERS} -r ./* root@${APP_SERVER}:/tmp/.deployment/personal-${VERSION}
                         sleep 15
-                        ssh root@${APP_SERVER} -i ${SSH_APP_SERVERS} docker build -t doctl -f /tmp/.deployment/personal-${params.version}/Dockerfile /tmp/.deployment/personal-${params.version}
+                        ssh root@${APP_SERVER} -i ${SSH_APP_SERVERS} docker build -t doctl -f /tmp/.deployment/personal-${version}/Dockerfile /tmp/.deployment/personal-${VERSION}
                         sleep 15
                         ssh root@${APP_SERVER} -i ${SSH_APP_SERVERS} docker run --rm -v /var/run/docker.sock:/var/run/docker.sock \
                             -e DIGITALOCEAN_ACCESS_TOKEN=${DIGITALOCEAN_ACCESS_TOKEN} \
@@ -34,7 +34,7 @@ pipeline {
                             doctl /run/run.sh
                         sleep 15
 
-		        ssh root@${APP_SERVER} -i ${SSH_APP_SERVERS} /bin/bash /run/reload.sh personal-${params.version}
+		        ssh root@${APP_SERVER} -i ${SSH_APP_SERVERS} /bin/bash /run/reload.sh personal-${VERSION}
                     '''
                 }
             }
