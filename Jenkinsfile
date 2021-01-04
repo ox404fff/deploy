@@ -20,8 +20,6 @@ pipeline {
 		    sh '''
 		        export APP_SERVER=142.93.96.209
 
-                    	echo ${APP_VERSION}
-
                         mkdir ~/.ssh && ssh-keyscan -H ${APP_SERVER} >> ~/.ssh/known_hosts
 
                         ssh root@${APP_SERVER} -i ${SSH_APP_SERVERS} mkdir -p /tmp/.deployment/personal-${APP_VERSION}
