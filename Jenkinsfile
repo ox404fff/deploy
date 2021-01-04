@@ -19,24 +19,24 @@ pipeline {
                 ]) {
 		    sh '''
 		        export APP_SERVER=142.93.96.209
-		        export WORKSPACE_PATH=${APP_NAME}-${APP_VERSION}
+		        export WORKSPACE_PATH="/tmp/.deployment/${APP_NAME}-${APP_VERSION}"
 
                         mkdir ~/.ssh && ssh-keyscan -H ${APP_SERVER} >> ~/.ssh/known_hosts
 
-                        ssh root@${APP_SERVER} -i ${SSH_APP_SERVERS} mkdir -p /tmp/.deployment/${WORKSPACE_PATH}
+                        ssh root@${APP_SERVER} -i ${SSH_APP_SERVERS} mkdir -p ${WORKSPACE_PATH}
                         sleep 15
-                        scp -i ${SSH_APP_SERVERS} -r ./* root@${APP_SERVER}:/tmp/.deployment/${WORKSPACE_PATH}
+                        scp -i ${SSH_APP_SERVERS} -r ./* root@${APP_SERVER}:${WORKSPACE_PATH}
                         sleep 15
-                        ssh root@${APP_SERVER} -i ${SSH_APP_SERVERS} docker build -t doctl -f /tmp/.deployment/${WORKSPACE_PATH}/Dockerfile /tmp/.deployment/${APP_NAME}-${APP_VERSION}
+                        ssh root@${APP_SERVER} -i ${SSH_APP_SERVERS} docker build -t doctl -f ${WORKSPACE_PATH}/Dockerfile ${WORKSPACE_PATH}
                         sleep 15
                         ssh root@${APP_SERVER} -i ${SSH_APP_SERVERS} docker run --rm -v /var/run/docker.sock:/var/run/docker.sock \
                             -e DIGITALOCEAN_ACCESS_TOKEN=${DIGITALOCEAN_ACCESS_TOKEN} \
-                            -e APP_NAME=${BUILD_NUMBER} \
+                            -e APP_NAME=${APP_NAME} \
                             -e APP_VERSION=${APP_VERSION} \
                             doctl /run/run.sh 
                         sleep 15
 
-		        ssh root@${APP_SERVER} -i ${SSH_APP_SERVERS} /bin/bash /tmp/.deployment/${WORKSPACE_PATH}/run.sh ${APP_NAME}-${APP_VERSION}
+		        ssh root@${APP_SERVER} -i ${SSH_APP_SERVERS} /bin/bash ${WORKSPACE_PATH}/run.sh ${APP_NAME}-${APP_VERSION}
                     '''
                 }
             }
