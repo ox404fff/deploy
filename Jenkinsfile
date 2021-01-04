@@ -6,15 +6,12 @@ pipeline {
             args '-v /var/run/docker.sock:/var/run/docker.sock -v $SSH_AUTH_SOCK:/ssh-agent --env SSH_AUTH_SOCK=/ssh-agent'
         }
     }
-
+    parameters {
+        string(name: 'Greeting', defaultValue: 'Hello', description: 'How should I greet the world?')
+    }
     stages {
         stage('Test') {
-            parameters {
-         	string(name: 'APPLICATION', description: 'Application name')
-         	string(name: 'VERSION', description: 'Version fd application')
-            }
             steps {
-		
 		export APP_SERVER=142.93.96.209
 
                 mkdir ~/.ssh && ssh-keyscan -H ${APP_SERVER} >> ~/.ssh/known_hosts
