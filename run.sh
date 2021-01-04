@@ -6,16 +6,7 @@ export INSTANCE_NAME="${NAME}-${VERSION}"
 
 export IP_ADDRESS=$(docker inspect --format '{{ .NetworkSettings.Networks.frontend.IPAddress }}' ${INSTANCE_NAME})
 
-echo $IP_ADDRESS
-
-# Parse:
-for i in ${INSTANCE_NAME//-/ }
-do
-    VERSION=$i
-    [[ -z "${NAME// }" ]] && NAME=$i || NAME="${NAME}-$i"
-done
-
-NAME=${NAME%"-$VERSION"}
+echo "Ip address of new instance: ${IP_ADDRESS}"
 
 # Register in LB
 docker cp /var/www/nginx/conf/${NAME}.conf nginx:/etc/nginx/conf.d
