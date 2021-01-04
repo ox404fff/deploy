@@ -2,7 +2,6 @@ pipeline {
     agent {
         dockerfile {
             filename 'Dockerfile'
-            additionalBuildArgs '--target build'
             dir '.'
             args '-v /var/run/docker.sock:/var/run/docker.sock -v $SSH_AUTH_SOCK:/ssh-agent --env SSH_AUTH_SOCK=/ssh-agent'
         }
