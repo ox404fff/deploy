@@ -8,6 +8,13 @@ export INSTANCE_NAME="${NAME}-${VERSION}"
 
 export IP_ADDRESS=$(docker inspect --format '{{ .NetworkSettings.Networks.frontend.IPAddress }}' ${INSTANCE_NAME})
 
+echo "name ${NAME}"
+echo ${VERSION}
+echo ${WORKSPACE_PATH}
+echo ${DIGITALOCEAN_ACCESS_TOKEN}
+echo ${INSTANCE_NAME}
+echo ${IP_ADDRESS}
+
 docker build -t doctl -f ${WORKSPACE_PATH}/Dockerfile ${WORKSPACE_PATH}
 docker run --rm -v /var/run/docker.sock:/var/run/docker.sock \
 	-e DIGITALOCEAN_ACCESS_TOKEN=${DIGITALOCEAN_ACCESS_TOKEN} \
@@ -15,7 +22,6 @@ docker run --rm -v /var/run/docker.sock:/var/run/docker.sock \
         -e APP_VERSION=${APP_VERSION} \
         doctl /run/run.sh 
 
-echo "Ip address of new instance: ${IP_ADDRESS}"
 
 # Register in LB
 docker cp ${WORKSPACE_PATH}/conf.d/${NAME}.conf nginx:/etc/nginx/conf.d
