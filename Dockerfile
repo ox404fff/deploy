@@ -15,3 +15,6 @@ RUN wget https://github.com/digitalocean/doctl/releases/download/v1.54.0/doctl-1
     tar xf /tmp/doctl-1.54.0-linux-amd64.tar.gz -C /tmp && \
     mv /tmp/doctl /usr/local/bin
 
+COPY run.sh /run/run.sh
+RUN chmod +x /run/run.sh
+
