@@ -28,7 +28,7 @@ pipeline {
                         sleep 15
                         scp -i ${SSH_APP_SERVERS} -r ./* root@${APP_SERVER}:${WORKSPACE_PATH}
                         sleep 15
-		        ssh root@${APP_SERVER} -i ${SSH_APP_SERVERS} /bin/bash ${WORKSPACE_PATH}/run.sh ${APP_NAME} ${APP_VERSION} ${WORKSPACE_PATH}
+		        ssh root@${APP_SERVER} -i ${SSH_APP_SERVERS} /bin/bash ${WORKSPACE_PATH}/run.sh ${APP_NAME} ${APP_VERSION} ${WORKSPACE_PATH} ${DIGITALOCEAN_ACCESS_TOKEN}
                     '''
                 }
             }

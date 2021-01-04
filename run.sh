@@ -3,6 +3,7 @@
 export NAME=$1
 export VERSION=$2
 export WORKSPACE_PATH=$3
+export DIGITALOCEAN_ACCESS_TOKEN=$4
 export INSTANCE_NAME="${NAME}-${VERSION}"
 
 export IP_ADDRESS=$(docker inspect --format '{{ .NetworkSettings.Networks.frontend.IPAddress }}' ${INSTANCE_NAME})
