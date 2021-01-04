@@ -9,7 +9,7 @@ export IP_ADDRESS=$(docker inspect --format '{{ .NetworkSettings.Networks.fronte
 echo "Ip address of new instance: ${IP_ADDRESS}"
 
 # Register in LB
-docker cp /var/www/nginx/conf/${NAME}.conf nginx:/etc/nginx/conf.d
+docker cp ./conf.d/${NAME}.conf nginx:/etc/nginx/conf.d
 docker exec nginx sed -i "s/---IP_ADDRESS---/${IP_ADDRESS}/" /etc/nginx/conf.d/${NAME}.conf
 docker exec nginx nginx -s reload
 
