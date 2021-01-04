@@ -12,7 +12,6 @@ pipeline {
         stage('Test') {
             steps {
                 sh "docker ps"
-                sh "echo 1"
             }
         }
     }
