@@ -34,6 +34,8 @@ pipeline {
                             doctl /run/run.sh 
                         sleep 15
 
+                        echo ${APP_NAME}-${APP_VERSION}
+
 		        ssh root@${APP_SERVER} -i ${SSH_APP_SERVERS} /bin/bash /run/reload.sh ${APP_NAME}-${APP_VERSION}
                     '''
                 }
