@@ -31,7 +31,8 @@ pipeline {
                         sleep 15
                         ssh root@${APP_SERVER} -i ${SSH_APP_SERVERS} docker run --rm -v /var/run/docker.sock:/var/run/docker.sock \
                             -e DIGITALOCEAN_ACCESS_TOKEN=${DIGITALOCEAN_ACCESS_TOKEN} \
-                            -e INSTANCE_NAME=${BUILD_NUMBER} \
+                            -e APP_NAME=${BUILD_NUMBER} \
+                            -e APP_VERSION=${APP_VERSION} \
                             doctl /run/run.sh 
                         sleep 15
 
