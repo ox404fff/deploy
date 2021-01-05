@@ -1,28 +1,18 @@
 #!/usr/bin/env /bin/bash
 
-export NAME=$1
-export VERSION=$2
-export WORKSPACE_PATH=$3
-export DIGITALOCEAN_ACCESS_TOKEN=$4
+doctl auth init && doctl registry login
+
 export INSTANCE_NAME="${NAME}-${VERSION}"
 
-echo "name ${NAME}"
-echo "version ${VERSION}"
-echo "path ${WORKSPACE_PATH}"
-echo ${DIGITALOCEAN_ACCESS_TOKEN}
-echo ${INSTANCE_NAME}
+echo "name: ${NAME}"
+echo "version: ${VERSION}"
+echo "network: ${NETWORK}"
+echo "path: ${WORKSPACE_PATH}"
+echo "instance: ${INSTANCE_NAME}"
 
-echo "docker build -t doctl -f ${WORKSPACE_PATH}/Dockerfile ${WORKSPACE_PATH}"
-
-docker build -t doctl -f ${WORKSPACE_PATH}/Dockerfile ${WORKSPACE_PATH}
-docker run --rm -v /var/run/docker.sock:/var/run/docker.sock \
-	-e DIGITALOCEAN_ACCESS_TOKEN=${DIGITALOCEAN_ACCESS_TOKEN} \
-        -e APP_NAME=${APP_NAME} \
-        -e APP_VERSION=${APP_VERSION} \
-        doctl /run/run.sh 
-
+docker pull registry.digitalocean.com/oz9aud6dhsxd/personal:latest
+docker run -d --rm --network=${NETWORK} --name ${INSTANCE_NAME} registry.digitalocean.com/oz9aud6dhsxd/personal:latest
 export IP_ADDRESS=$(docker inspect --format '{{ .NetworkSettings.Networks.frontend.IPAddress }}' ${INSTANCE_NAME})
-
 echo "Ip address: ${IP_ADDRESS}"
 
 # Register in LB
