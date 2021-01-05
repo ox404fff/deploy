@@ -37,7 +37,7 @@ pipeline {
                             -e VERSION=${APP_VERSION} \
                             -e WORKSPACE_PATH=${WORKSPACE_PATH} \
                             -e DIGITALOCEAN_ACCESS_TOKEN=${DIGITALOCEAN_ACCESS_TOKEN} \
-                            -e NETWORK=frontend
+                            -e NETWORK=frontend \
                             doctl /run/run.sh
                     '''
                 }
