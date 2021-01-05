@@ -31,11 +31,12 @@ pipeline {
 
                         ssh root@${APP_SERVER} -i ${SSH_APP_SERVERS} docker build -t doctl -f ${WORKSPACE_PATH}/Dockerfile ${WORKSPACE_PATH}
                         sleep 15
-                        ssh root@${APP_SERVER} -i ${SSH_APP_SERVERS} docker run --rm -v /var/run/docker.sock:/var/run/docker.sock \
+                        ssh root@${APP_SERVER} -i ${SSH_APP_SERVERS} docker run --rm \
+                            -v /var/run/docker.sock:/var/run/docker.sock \
+                            -v ${WORKSPACE_PATH}:/deploy \
                             -e DIGITALOCEAN_ACCESS_TOKEN=${DIGITALOCEAN_ACCESS_TOKEN} \
                             -e NAME=${APP_NAME} \
                             -e VERSION=${APP_VERSION} \
-                            -e WORKSPACE_PATH=${WORKSPACE_PATH} \
                             -e DIGITALOCEAN_ACCESS_TOKEN=${DIGITALOCEAN_ACCESS_TOKEN} \
                             -e NETWORK=frontend \
                             doctl /run/run.sh
