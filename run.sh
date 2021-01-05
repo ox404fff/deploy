@@ -10,8 +10,8 @@ echo "network: ${NETWORK}"
 echo "path: ${WORKSPACE_PATH}"
 echo "instance: ${INSTANCE_NAME}"
 
-docker pull registry.digitalocean.com/oz9aud6dhsxd/personal:latest
-docker run -d --rm --network=${NETWORK} --name ${INSTANCE_NAME} registry.digitalocean.com/oz9aud6dhsxd/personal:latest
+docker pull registry.digitalocean.com/oz9aud6dhsxd/personal:${VERSION}
+docker run -d --rm --network=${NETWORK} --name ${INSTANCE_NAME} registry.digitalocean.com/oz9aud6dhsxd/personal:${VERSION}
 export IP_ADDRESS=$(docker inspect --format '{{ .NetworkSettings.Networks.frontend.IPAddress }}' ${INSTANCE_NAME})
 echo "Ip address: ${IP_ADDRESS}"
 
