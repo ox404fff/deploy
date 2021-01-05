@@ -12,6 +12,8 @@ echo ${WORKSPACE_PATH}
 echo ${DIGITALOCEAN_ACCESS_TOKEN}
 echo ${INSTANCE_NAME}
 
+echo "docker build -t doctl -f ${WORKSPACE_PATH}/Dockerfile ${WORKSPACE_PATH}"
+
 docker build -t doctl -f ${WORKSPACE_PATH}/Dockerfile ${WORKSPACE_PATH}
 docker run --rm -v /var/run/docker.sock:/var/run/docker.sock \
 	-e DIGITALOCEAN_ACCESS_TOKEN=${DIGITALOCEAN_ACCESS_TOKEN} \
