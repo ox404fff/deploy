@@ -8,7 +8,7 @@ export INSTANCE_NAME="${NAME}-${VERSION}"
 
 echo "name ${NAME}"
 echo "version ${VERSION}"
-echo ${WORKSPACE_PATH}
+echo "path ${WORKSPACE_PATH}"
 echo ${DIGITALOCEAN_ACCESS_TOKEN}
 echo ${INSTANCE_NAME}
 
