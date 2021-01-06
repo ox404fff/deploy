@@ -34,12 +34,12 @@ pipeline {
                         sleep 15
                         ssh root@${APP_SERVER} -i ${SSH_APP_SERVERS} docker run --rm \
                             -v /var/run/docker.sock:/var/run/docker.sock \
-                            -v ${WORKSPACE_PATH}:/deploy \
-                            -e CONTAINER_REGISTRY_USERNAME=${CONTAINER_REGISTRY_USERNAME} \
-                            -e CONTAINER_REGISTRY_PASSWORD=${CONTAINER_REGISTRY_PASSWORD} \
                             -e NAME=${APP_NAME} \
                             -e VERSION=${APP_VERSION} \
+                            -v ${WORKSPACE_PATH}:/deploy \
                             -e CONTAINER_REGISTRY=${CONTAINER_REGISTRY} \
+                            -e CONTAINER_REGISTRY_USERNAME=${CONTAINER_REGISTRY_USERNAME} \
+                            -e CONTAINER_REGISTRY_PASSWORD=${CONTAINER_REGISTRY_PASSWORD} \
                             -e NETWORK=frontend \
                             doctl /run/run.sh
                     '''
