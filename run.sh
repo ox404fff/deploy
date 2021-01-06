@@ -1,6 +1,6 @@
 #!/usr/bin/env /bin/bash
 
-docker login --username ox404fff --password ${CONTAINER_REGISTRY_ACCESS_TOKEN}
+docker login --username ${CONTAINER_REGISTRY_USERNAME} --password ${CONTAINER_REGISTRY_PASSWORD}
 
 export INSTANCE_NAME="${NAME}-${VERSION}"
 
@@ -9,8 +9,8 @@ echo "version: ${VERSION}"
 echo "network: ${NETWORK}"
 echo "instance: ${INSTANCE_NAME}"
 
-docker pull ox404fff/${NAME}:${VERSION}
-docker run -d --rm --network=${NETWORK} --name ${INSTANCE_NAME} ox404fff/${NAME}:${VERSION}
+docker pull ${CONTAINER_REGISTRY}/${NAME}:${VERSION}
+docker run -d --rm --network=${NETWORK} --name ${INSTANCE_NAME} ${CONTAINER_REGISTRY}/${NAME}:${VERSION}
 export IP_ADDRESS=$(docker inspect --format '{{ .NetworkSettings.Networks.frontend.IPAddress }}' ${INSTANCE_NAME})
 echo "Ip address: ${IP_ADDRESS}"
 
