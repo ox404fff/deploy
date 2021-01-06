@@ -9,8 +9,8 @@ echo "version: ${VERSION}"
 echo "network: ${NETWORK}"
 echo "instance: ${INSTANCE_NAME}"
 
-docker pull registry.digitalocean.com/oz9aud6dhsxd/personal:${VERSION}
-docker run -d --rm --network=${NETWORK} --name ${INSTANCE_NAME} registry.digitalocean.com/oz9aud6dhsxd/personal:${VERSION}
+docker pull ox404fff/personal:${VERSION}
+docker run -d --rm --network=${NETWORK} --name ${INSTANCE_NAME} ox404fff/personal:${VERSION}
 export IP_ADDRESS=$(docker inspect --format '{{ .NetworkSettings.Networks.frontend.IPAddress }}' ${INSTANCE_NAME})
 echo "Ip address: ${IP_ADDRESS}"
 
