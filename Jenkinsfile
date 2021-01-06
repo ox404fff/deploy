@@ -14,7 +14,7 @@ pipeline {
         stage('Test') {
             steps {
         		withCredentials([
-                    string(credentialsId: 'doAccessToken', variable: 'CONTAINER_REGISTRY_ACCESS_TOKEN'),
+                    string(credentialsId: 'hub.docker.com', variable: 'CONTAINER_REGISTRY_ACCESS_TOKEN'),
                     sshUserPrivateKey(credentialsId: 'app-servers', keyFileVariable: 'SSH_APP_SERVERS')
                 ]) {
 		            sh '''
