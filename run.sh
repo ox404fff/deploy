@@ -1,6 +1,6 @@
 #!/usr/bin/env /bin/bash
 
-doctl auth init && doctl registry login
+docker login --username ox404fff --password ${CONTAINER_REGISTRY_ACCESS_TOKEN}
 
 export INSTANCE_NAME="${NAME}-${VERSION}"
 

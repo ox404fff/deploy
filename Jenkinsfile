@@ -14,7 +14,7 @@ pipeline {
         stage('Test') {
             steps {
         		withCredentials([
-                    string(credentialsId: 'doAccessToken', variable: 'DIGITALOCEAN_ACCESS_TOKEN'),
+                    string(credentialsId: 'doAccessToken', variable: 'CONTAINER_REGISTRY_ACCESS_TOKEN'),
                     sshUserPrivateKey(credentialsId: 'app-servers', keyFileVariable: 'SSH_APP_SERVERS')
                 ]) {
 		            sh '''
@@ -34,10 +34,9 @@ pipeline {
                         ssh root@${APP_SERVER} -i ${SSH_APP_SERVERS} docker run --rm \
                             -v /var/run/docker.sock:/var/run/docker.sock \
                             -v ${WORKSPACE_PATH}:/deploy \
-                            -e DIGITALOCEAN_ACCESS_TOKEN=${DIGITALOCEAN_ACCESS_TOKEN} \
+                            -e CONTAINER_REGISTRY_ACCESS_TOKEN=${CONTAINER_REGISTRY_ACCESS_TOKEN} \
                             -e NAME=${APP_NAME} \
                             -e VERSION=${APP_VERSION} \
-                            -e DIGITALOCEAN_ACCESS_TOKEN=${DIGITALOCEAN_ACCESS_TOKEN} \
                             -e NETWORK=frontend \
                             doctl /run/run.sh
                     '''
