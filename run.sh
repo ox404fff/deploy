@@ -7,6 +7,7 @@ export INSTANCE_NAME="${NAME}-${VERSION}"
 echo "name: ${NAME}"
 echo "version: ${VERSION}"
 echo "network: ${NETWORK}"
+echo "registry: ${CONTAINER_REGISTRY}"
 echo "instance: ${INSTANCE_NAME}"
 
 docker pull ${CONTAINER_REGISTRY}/${NAME}:${VERSION}
