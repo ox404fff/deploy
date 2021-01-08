@@ -15,8 +15,8 @@ echo "Is exists: ${IS_EXISTS}"
 
 docker pull ${CONTAINER_REGISTRY}/${NAME}:${VERSION}
 
-if [[ "$IS_EXISTS" = "1" ]]]
-then
+if [ "$IS_EXISTS" == "1" ]; then
+  echo "Stopping existsing container ${name}"
   docker stop ${INSTANCE_NAME}
 fi
 
@@ -27,18 +27,20 @@ echo "Is web: ${IS_WEB}"
 echo "Ip address: ${IP_ADDRESS}"
 
 # Register in LB
-if [[ "$IS_WEB" = "1" ]]
-then
+if [ "$IS_WEB" == "1" ]; then
+    echo "Registration in LB..."
     docker cp /deploy/conf.d/${NAME}.conf nginx:/etc/nginx/conf.d
     docker exec nginx sed -i "s/---IP_ADDRESS---/${IP_ADDRESS}/" /etc/nginx/conf.d/${NAME}.conf
     docker exec nginx nginx -s reload
 fi
 
 # Stop old containers
+echo "Cleaning old containers..."
 for name in $(docker ps --format '{{.Names}}' | grep ^${NAME}-[0-9]*$)
 do
     if [[ "$name" != "${NAME}-${VERSION}" ]]
     then
+        echo "Stopping container ${name}"
         docker stop ${name}
     fi
 done
