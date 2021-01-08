@@ -32,7 +32,7 @@ pipeline {
 
                         ssh root@${APP_SERVER} -i ${SSH_APP_SERVERS} docker build -t doctl -f ${WORKSPACE_PATH}/Dockerfile ${WORKSPACE_PATH}
                         sleep 15
-                        ssh root@${APP_SERVER} -i ${SSH_APP_SERVERS} docker run --rm \
+                        ssh root@${APP_SERVER} -i ${SSH_APP_SERVERS} docker run \
                             -v /var/run/docker.sock:/var/run/docker.sock \
                             -e NAME=${APP_NAME} \
                             -e VERSION=${APP_VERSION} \

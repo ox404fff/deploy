@@ -11,7 +11,7 @@ echo "registry: ${CONTAINER_REGISTRY}"
 echo "instance: ${INSTANCE_NAME}"
 
 docker pull ${CONTAINER_REGISTRY}/${NAME}:${VERSION}
-docker run -d --rm --network=${NETWORK} --name ${INSTANCE_NAME} ${CONTAINER_REGISTRY}/${NAME}:${VERSION}
+docker run -d --network=${NETWORK} --name ${INSTANCE_NAME} ${CONTAINER_REGISTRY}/${NAME}:${VERSION}
 export IP_ADDRESS=$(docker inspect --format '{{ .NetworkSettings.Networks.frontend.IPAddress }}' ${INSTANCE_NAME})
 echo "Ip address: ${IP_ADDRESS}"
 
