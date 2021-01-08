@@ -13,13 +13,17 @@ echo "instance: ${INSTANCE_NAME}"
 docker pull ${CONTAINER_REGISTRY}/${NAME}:${VERSION}
 docker run -d --network=${NETWORK} --name ${INSTANCE_NAME} ${CONTAINER_REGISTRY}/${NAME}:${VERSION}
 export IP_ADDRESS=$(docker inspect --format '{{ .NetworkSettings.Networks.frontend.IPAddress }}' ${INSTANCE_NAME})
+export IS_WEB=$(docker inspect --format '{{ .NetworkSettings.Ports }}' ${INSTANCE_NAME} | grep "map\[80\/tcp:\[\]\]" | wc -l)
+echo "Is web: ${IS_WEB}"
 echo "Ip address: ${IP_ADDRESS}"
 
 # Register in LB
-docker cp /deploy/conf.d/${NAME}.conf nginx:/etc/nginx/conf.d
-docker exec nginx sed -i "s/---IP_ADDRESS---/${IP_ADDRESS}/" /etc/nginx/conf.d/${NAME}.conf
-docker exec nginx nginx -s reload
-
+if [[ "$IS_WEB" = "1" ]]
+then
+    docker cp /deploy/conf.d/${NAME}.conf nginx:/etc/nginx/conf.d
+    docker exec nginx sed -i "s/---IP_ADDRESS---/${IP_ADDRESS}/" /etc/nginx/conf.d/${NAME}.conf
+    docker exec nginx nginx -s reload
+fi
 
 # Stop old containers
 for name in $(docker ps --format '{{.Names}}' | grep ^${NAME}-[0-9]*$)
