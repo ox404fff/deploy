@@ -32,7 +32,7 @@ fi
 
 # Running new instance
 docker pull ${CONTAINER_REGISTRY}/${NAME}:${VERSION}
-docker run -d --rm --network=${NETWORK} --name ${INSTANCE_NAME} ${CONTAINER_REGISTRY}/${NAME}:${VERSION}
+docker run -d --rm --name ${INSTANCE_NAME} ${CONTAINER_REGISTRY}/${NAME}:${VERSION}
 docker network connect ${NETWORK} ${INSTANCE_NAME}
 docker network connect ${NAME} ${INSTANCE_NAME}
 
