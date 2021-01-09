@@ -10,6 +10,10 @@ echo "network: ${NETWORK}"
 echo "registry: ${CONTAINER_REGISTRY}"
 echo "instance: ${INSTANCE_NAME}"
 
+# Create newtworks if not exists
+docker network inspect ${NETWORK} >/dev/null 2>&1 || docker network create --driver bridge ${NETWORK}
+docker network inspect ${NAME} >/dev/null 2>&1 || docker network create --driver bridge ${NAME}
+
 # Making sure if instance is not exists
 export IS_EXISTS=$(docker ps -a --format '{{.Names}}' | grep ${INSTANCE_NAME} | wc -l)
 echo "Is exists: ${IS_EXISTS}"
@@ -29,6 +33,10 @@ fi
 # Running new instance
 docker pull ${CONTAINER_REGISTRY}/${NAME}:${VERSION}
 docker run -d --rm --network=${NETWORK} --name ${INSTANCE_NAME} ${CONTAINER_REGISTRY}/${NAME}:${VERSION}
+docker network connect ${NETWORK} ${INSTANCE_NAME}
+docker network connect ${NAME} ${INSTANCE_NAME}
+
+# Inspecting instance
 export IP_ADDRESS=$(docker inspect --format '{{ .NetworkSettings.Networks.frontend.IPAddress }}' ${INSTANCE_NAME})
 export IS_WEB=$(docker inspect --format '{{ .NetworkSettings.Ports }}' ${INSTANCE_NAME} | grep "map\[80\/tcp:\[\]\]" | wc -l)
 echo "Is web: ${IS_WEB}"
