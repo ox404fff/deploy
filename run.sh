@@ -32,9 +32,8 @@ fi
 
 # Running new instance
 docker pull ${CONTAINER_REGISTRY}/${NAME}:${VERSION}
-docker run -d --rm --name ${INSTANCE_NAME} ${CONTAINER_REGISTRY}/${NAME}:${VERSION}
+docker run -d --rm --network ${NAME} --name ${INSTANCE_NAME} ${CONTAINER_REGISTRY}/${NAME}:${VERSION}
 docker network connect ${NETWORK} ${INSTANCE_NAME}
-docker network connect ${NAME} ${INSTANCE_NAME}
 
 # Inspecting instance
 export IS_WEB=$(docker inspect --format '{{ .NetworkSettings.Ports }}' ${INSTANCE_NAME} | grep "map\[80\/tcp:\[\]\]" | wc -l)
