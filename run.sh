@@ -10,16 +10,22 @@ echo "network: ${NETWORK}"
 echo "registry: ${CONTAINER_REGISTRY}"
 echo "instance: ${INSTANCE_NAME}"
 
-export IS_EXISTS=$(docker ps --format '{{.Names}}' | grep personal-283 | wc -l)
+export IS_EXISTS=$(docker ps -a --format '{{.Names}}' | grep ${INSTANCE_NAME} | wc -l)
 echo "Is exists: ${IS_EXISTS}"
-
-docker pull ${CONTAINER_REGISTRY}/${NAME}:${VERSION}
 
 if [ "$IS_EXISTS" == "1" ]; then
   echo "Stopping existsing container ${name}"
   docker stop ${INSTANCE_NAME}
 fi
 
+IS_EXISTS=$(docker ps -a --format '{{.Names}}' | grep ${INSTANCE_NAME} | wc -l)
+
+if [ "$IS_EXISTS" == "1" ]; then
+  echo "Removing existsing container ${name}"
+  docker rm ${INSTANCE_NAME}
+fi
+
+docker pull ${CONTAINER_REGISTRY}/${NAME}:${VERSION}
 docker run -d --rm --network=${NETWORK} --name ${INSTANCE_NAME} ${CONTAINER_REGISTRY}/${NAME}:${VERSION}
 export IP_ADDRESS=$(docker inspect --format '{{ .NetworkSettings.Networks.frontend.IPAddress }}' ${INSTANCE_NAME})
 export IS_WEB=$(docker inspect --format '{{ .NetworkSettings.Ports }}' ${INSTANCE_NAME} | grep "map\[80\/tcp:\[\]\]" | wc -l)
