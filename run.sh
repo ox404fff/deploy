@@ -48,8 +48,7 @@ export CONTAINERS=$(docker ps --format '{{.Names}}' | grep ^${INSTANCE_NAME//[0-
 echo ${CONTAINERS}
 for name in ${ONTAINERS}
 do
-    if [[ "$name" != "${NAME}-${VERSION}" ]]
-    then
+    if [ "$name" != "${NAME}-${VERSION}" ]; then
         echo "Stopping container ${name}"
         docker stop ${name}
     fi
