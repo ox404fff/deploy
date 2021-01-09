@@ -20,7 +20,7 @@ if [ "$IS_EXISTS" == "1" ]; then
   docker stop ${INSTANCE_NAME}
 fi
 
-docker run -d --network=${NETWORK} --name ${INSTANCE_NAME} ${CONTAINER_REGISTRY}/${NAME}:${VERSION}
+docker run -d --rm --network=${NETWORK} --name ${INSTANCE_NAME} ${CONTAINER_REGISTRY}/${NAME}:${VERSION}
 export IP_ADDRESS=$(docker inspect --format '{{ .NetworkSettings.Networks.frontend.IPAddress }}' ${INSTANCE_NAME})
 export IS_WEB=$(docker inspect --format '{{ .NetworkSettings.Ports }}' ${INSTANCE_NAME} | grep "map\[80\/tcp:\[\]\]" | wc -l)
 echo "Is web: ${IS_WEB}"
