@@ -10,6 +10,7 @@ echo "network: ${NETWORK}"
 echo "registry: ${CONTAINER_REGISTRY}"
 echo "instance: ${INSTANCE_NAME}"
 
+# Making sure if instance is not exists
 export IS_EXISTS=$(docker ps -a --format '{{.Names}}' | grep ${INSTANCE_NAME} | wc -l)
 echo "Is exists: ${IS_EXISTS}"
 
@@ -25,6 +26,7 @@ if [ "$IS_EXISTS" == "1" ]; then
   docker rm ${INSTANCE_NAME}
 fi
 
+# Running new instance
 docker pull ${CONTAINER_REGISTRY}/${NAME}:${VERSION}
 docker run -d --rm --network=${NETWORK} --name ${INSTANCE_NAME} ${CONTAINER_REGISTRY}/${NAME}:${VERSION}
 export IP_ADDRESS=$(docker inspect --format '{{ .NetworkSettings.Networks.frontend.IPAddress }}' ${INSTANCE_NAME})
@@ -42,7 +44,7 @@ fi
 
 # Stop old containers
 echo "Cleaning old containers..."
-export CONTAINERS=$(docker ps --format '{{.Names}}' | grep ^${NAME}-[0-9]*$)
+export CONTAINERS=$(docker ps --format '{{.Names}}' | grep ^${INSTANCE_NAME//[0-9]*/\[0-9\]\*}$)
 echo ${CONTAINERS}
 for name in ${ONTAINERS}
 do
