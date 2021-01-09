@@ -46,7 +46,7 @@ echo "Ip address: ${IP_ADDRESS}"
 if [ "$IS_WEB" == "1" ]; then
     echo "Registration in LB..."
     docker cp /deploy/conf.d/${NAME}.conf nginx:/etc/nginx/conf.d
-    docker exec nginx sed -i "s/---IP_ADDRESS---/${IP_ADDRESS}/" /etc/nginx/conf.d/${NAME}.conf
+    docker exec nginx sed -i "s/---INSTANCE_NAME---/${INSTANCE_NAME}/" /etc/nginx/conf.d/${NAME}.conf
     docker exec nginx nginx -s reload
 fi
 
