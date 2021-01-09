@@ -42,7 +42,7 @@ fi
 
 # Stop old containers
 echo "Cleaning old containers..."
-ecport CONTAINERS=$(docker ps --format '{{.Names}}' | grep ^${NAME}-[0-9]*$)
+export CONTAINERS=$(docker ps --format '{{.Names}}' | grep ^${NAME}-[0-9]*$)
 echo ${CONTAINERS}
 for name in ${ONTAINERS}
 do
