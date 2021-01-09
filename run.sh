@@ -42,7 +42,9 @@ fi
 
 # Stop old containers
 echo "Cleaning old containers..."
-for name in $(docker ps --format '{{.Names}}' | grep ^${NAME}-[0-9]*$)
+ecport CONTAINERS=$(docker ps --format '{{.Names}}' | grep ^${NAME}-[0-9]*$)
+echo ${CONTAINERS}
+for name in ${ONTAINERS}
 do
     if [[ "$name" != "${NAME}-${VERSION}" ]]
     then
