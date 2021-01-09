@@ -37,10 +37,8 @@ docker network connect ${NETWORK} ${INSTANCE_NAME}
 docker network connect ${NAME} ${INSTANCE_NAME}
 
 # Inspecting instance
-export IP_ADDRESS=$(docker inspect --format '{{ .NetworkSettings.Networks.frontend.IPAddress }}' ${INSTANCE_NAME})
 export IS_WEB=$(docker inspect --format '{{ .NetworkSettings.Ports }}' ${INSTANCE_NAME} | grep "map\[80\/tcp:\[\]\]" | wc -l)
 echo "Is web: ${IS_WEB}"
-echo "Ip address: ${IP_ADDRESS}"
 
 # Register in LB
 if [ "$IS_WEB" == "1" ]; then
